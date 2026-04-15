@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datastore-backend
+  namespace: {{.Values.StudentStoreBackend.StudentDeploy.namespace}}
+  labels:
+    type: datastore-backend
+
+    {{- include "common.labels" . | nindent 12}}
+    {{- with .Values.StudentStoreBackend.StudentDeploy}}
+    
+spec:
+  replicas: {{.replicaCount}}
+  selector:
+    matchLabels:
+      type: backend
+  template:
+    metadata:
+      name: datastore-backend
+      labels:
+        type: backend
+    spec:
+      containers:
+        - name: datastore-backend
+          image: 8072388539/datastore:{{.image}}
+          ports:
+            - containerPort: 8084
+          env:
+            - name: MYSQL_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: datastore-be-cm
+                  key: mysqlHost
+            - name: MYSQL_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: datastore-be-cm
+                  key: mysqlUname
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: datastore-be-secret
+                  key: mysqlPassword
+          resources: {{.resources }}
+          livenessProbe: {{.livenessProbe}}
+          readinessProbe: {{.readinessProbe}}  
+          startupProbe: {{.startupProbe}}
+{{- end}}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.StudentStoreBackend.StudentSvc.namespace}}
+spec:
+  ports:
+    - port: {{.Values.StudentStoreBackend.StudentSvc.svcPort}}
+      targetPort: 8084
+  selector:
+    type: backend
+

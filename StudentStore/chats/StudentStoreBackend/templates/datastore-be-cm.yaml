@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: datastore-be-cm
+data:
+  mysqlHost: {{.Values.StudentStoreBackend.StudentCm.mysqlHost}}
+  mysqlUname: {{.Values.StudentStoreBackend.StudentCm.name}}
