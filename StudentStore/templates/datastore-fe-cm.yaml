@@ -2,6 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: datastore-fe-cm
-  namespace: {{.Values.StudentStoreFrontend.studentFeCm.namespace}}
+  namespace: {{ .Values.studentFeCm.namespace }}
 data:
-  backendEndpoint: {{.Values.StudentStoreFrontend.studentFeCm.backendEndpoint}}
+  backendEndpoint: {{ .Values.studentFeCm.backendEndpoint | quote }}
