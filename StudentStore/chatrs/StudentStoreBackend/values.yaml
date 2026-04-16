@@ -1,13 +1,14 @@
 StudentStoreBackend:
   StudentDeploy:
     image: v47.0
-    replicaCount:1
+    replicaCount: 1
     namespace: backend
 
     resources:
       requests:
        cpu: 100m
        memory: "500Mi"
+       
       limits:
        cpu: "1"
        memory: "1Gi"

@@ -1,3 +1,4 @@
+{{- with .Values.StudentStoreBackend.StudentDeploy}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -5,10 +6,7 @@ metadata:
   namespace: {{.Values.StudentStoreBackend.StudentDeploy.namespace}}
   labels:
     type: datastore-backend
-
-    {{- include "common.labels" . | nindent 12}}
-    {{- with .Values.StudentStoreBackend.StudentDeploy}}
-    
+    {{- include "common.labels" . | nindent 4}}
 spec:
   replicas: {{.replicaCount}}
   selector:
@@ -43,19 +41,20 @@ spec:
                   key: mysqlPassword
           resources: {{- toYaml .resources | nindent 12}}
           livenessProbe: {{- toYaml .livenessProbe | nindent 12}}
-          readinessProbe: {{- toYaml .readinessProbe | nindent 12}}  
+          readinessProbe: {{- toYaml .readinessProbe | nindent 12}}
           startupProbe: {{- toYaml .startupProbe | nindent 12}}
 {{- end}}
+
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{.Values.StudentStoreBackend.StudentSvc.namespace}}
+  name: datastore-backend-svc
+  namespace: {{.Values.StudentStoreBackend.StudentSvc.namespace}}
 spec:
   ports:
     - port: {{.Values.StudentStoreBackend.StudentSvc.svcPort}}
       targetPort: 8084
   selector:
     type: backend
-
