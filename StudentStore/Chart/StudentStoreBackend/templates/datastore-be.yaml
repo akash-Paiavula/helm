@@ -49,16 +49,15 @@ spec:
 {{- end }}
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
   name: datastore-backend-svc
-  namespace: {{ .Values.StudentStoreBackend.StudentSvc.namespace }}
+  namespace: {{ .Values.StudentSvc.namespace }}
 spec:
   type: ClusterIP
   ports:
-    - port: {{ .Values.StudentStoreBackend.StudentSvc.svcPort }}
+    - port: {{ .Values.StudentSvc.svcPort }}
       targetPort: 8084
   selector:
     type: backend
