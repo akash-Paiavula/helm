@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
+namespace: {{.Values.StudentStoreFrontend.studentFeCm.namespace}}
 metadata:
   name: datastore-fe-cm
 data:
-  backendEndpoint: http://datastore-backend-svc.default.svc.cluster.local:8081
+  backendEndpoint: {{.Values.StudentStoreFrontend.studentFeCm.backendEndpoint}}

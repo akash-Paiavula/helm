@@ -41,10 +41,10 @@ spec:
                 secretKeyRef:
                   name: datastore-be-secret
                   key: mysqlPassword
-          resources: {{.resources }}
-          livenessProbe: {{.livenessProbe}}
-          readinessProbe: {{.readinessProbe}}  
-          startupProbe: {{.startupProbe}}
+          resources: {{- toYaml .resources | nindent 12}}
+          livenessProbe: {{- toYaml .livenessProbe | nindent 12}}
+          readinessProbe: {{- toYaml .readinessProbe | nindent 12}}  
+          startupProbe: {{- toYaml .startupProbe | nindent 12}}
 {{- end}}
 ---
 

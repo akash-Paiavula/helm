@@ -1,0 +1,4 @@
+apiVersion: v1
+kind: studentStoreFrontend
+description: A Helm chart for Kubernetes to deploy StudentStore Frontend and Backend applications
+version : 0.0.1

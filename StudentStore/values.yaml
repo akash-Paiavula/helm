@@ -1,0 +1,44 @@
+StudentStoreFrontend:
+  studentFeDeploy:
+    imgTag: V47.0
+    replicaCount: 3
+    namespace: frontend
+    containerResources:
+      requests:
+          cpu: 100m
+          memory: "500Mi"
+      limits:
+          cpu: 1
+          memory: "1Gi"
+    livenessProbe:
+      httpGet:
+          path: /
+          port: 8080
+      initialDelaySeconds: 3
+      periodSeconds: 3
+      timeoutSeconds: 4
+      failureThreshold: 3
+    readinessProbe:
+      httpGet:
+          path: /
+          port: 8080
+      initialDelaySeconds: 3
+      periodSeconds: 3
+      timeoutSeconds: 4
+      failureThreshold: 3
+    startupProbe:
+      httpGet:
+          path: /
+          port: 8080
+      initialDelaySeconds: 3
+      periodSeconds: 3
+      timeoutSeconds: 4
+      failureThreshold: 3
+
+studentSvc:
+  namespace: frontend
+  svcPort: 8081
+
+studentFeCm:
+  namespace: frontend
+  backendEndpoint: http://datastore-backend-svc.default.svc.cluster.local:8081
