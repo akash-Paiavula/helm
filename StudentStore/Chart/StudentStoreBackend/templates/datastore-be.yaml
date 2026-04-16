@@ -1,14 +1,13 @@
-{{- with .Values.StudentStoreBackend.StudentDeploy}}
+{{- with .Values.StudentStoreBackend.StudentDeploy }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: datastore-backend
-  namespace: {{.Values.StudentStoreBackend.StudentDeploy.namespace}}
+  namespace: {{ .namespace }}
   labels:
-    type: datastore-backend
-    {{- include "common.labels" . | nindent 4}}
+    type: backend
 spec:
-  replicas: {{.replicaCount}}
+  replicas: {{ .replicaCount }}
   selector:
     matchLabels:
       type: backend
@@ -20,7 +19,7 @@ spec:
     spec:
       containers:
         - name: datastore-backend
-          image: 8072388539/datastore:{{.image}}
+          image: 8072388539/datastore:{{ .image }}
           ports:
             - containerPort: 8084
           env:
@@ -39,11 +38,15 @@ spec:
                 secretKeyRef:
                   name: datastore-be-secret
                   key: mysqlPassword
-          resources: {{- toYaml .resources | nindent 12}}
-          livenessProbe: {{- toYaml .livenessProbe | nindent 12}}
-          readinessProbe: {{- toYaml .readinessProbe | nindent 12}}
-          startupProbe: {{- toYaml .startupProbe | nindent 12}}
-{{- end}}
+          resources:
+{{ toYaml .resources | indent 12 }}
+          livenessProbe:
+{{ toYaml .livenessProbe | indent 12 }}
+          readinessProbe:
+{{ toYaml .readinessProbe | indent 12 }}
+          startupProbe:
+{{ toYaml .startupProbe | indent 12 }}
+{{- end }}
 
 ---
 
@@ -51,10 +54,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: datastore-backend-svc
-  namespace: {{.Values.StudentStoreBackend.StudentSvc.namespace}}
+  namespace: {{ .Values.StudentStoreBackend.StudentSvc.namespace }}
 spec:
+  type: ClusterIP
   ports:
-    - port: {{.Values.StudentStoreBackend.StudentSvc.svcPort}}
+    - port: {{ .Values.StudentStoreBackend.StudentSvc.svcPort }}
       targetPort: 8084
   selector:
     type: backend
