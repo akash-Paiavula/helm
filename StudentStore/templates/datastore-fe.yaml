@@ -1,11 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
-namespace: {{.Values.StudentStoreFrontend.StudentDeploy.namespace}}
-{{- with .Values.StudentStoreFrontend.StudentDeploy}}
 metadata:
   name: datastore-frontend
+  namespace: {{.Values.StudentStoreFrontend.StudentDeploy.namespace}}
   labels:
     type: frontend
+    {{- with .Values.StudentStoreFrontend.StudentDeploy}}
+    {{- include "common.labels" . | nindent 12}}
+    {{- end}}
 spec:
   template:
     metadata:
